@@ -25,7 +25,7 @@ namespace Task_Meneger.Controllers.DataBase
         {
             using var connection = new SqlConnection(_connection);
             {
-                var sqlcode = "SELECT * FROM Tasks";
+                var sqlcode = "SELECT * FROM MyTasks";
                 var tasks = connection.Query<MyTask>(sqlcode).ToList();
                 return tasks;
             }
@@ -34,7 +34,7 @@ namespace Task_Meneger.Controllers.DataBase
         {
             using var connection = new SqlConnection(_connection);
             {
-                var sqlcode = "SELECT * FROM Tasks WHERE UserId = @UserId";
+                var sqlcode = "SELECT * FROM MyTasks WHERE UserId = @UserId";
                 var tasks = connection.Query<MyTask>(sqlcode, new { userId }).ToList();
                 return tasks;
             }
@@ -48,8 +48,8 @@ namespace Task_Meneger.Controllers.DataBase
         {
             using var connection = new SqlConnection(_connection);
             {
-                var sqlcode = "DELETE FROM Tasks WHERE Id = @Id AND UserId = @UserId";
-                connection.ExecuteAsync(sqlcode, new { id, userId });
+                var sqlcode = "DELETE FROM MyTasks WHERE Id = @Id AND UserId = @UserId";
+                connection.Execute(sqlcode, new { id, userId });
             }
         }
 
@@ -63,8 +63,8 @@ namespace Task_Meneger.Controllers.DataBase
         {
             using var connection = new SqlConnection(_connection);
             {
-                var sqlcode = "UPDATE Tasks SET NameTask = @NameTask, [Description] = @Description, StartTask = @StartTask, Deadline = @Deadline, UserId = @UserId, [Priority_Id] = @Priority_Id, [Status_Id] = @Status WHERE Id = @Id AND UserId = @UserId";
-                connection.ExecuteAsync(sqlcode, new { task.NameTask, task.Description, task.StartTask, task.Deadline, userId, task.Priority, task.Status, id });
+                var sqlcode = "UPDATE MyTasks SET NameTask = @NameTask, [Description] = @Description, StartTask = @StartTask, Deadline = @Deadline, UserId = @UserId, [Priority_Id] = @Priority_Id, [Status_Id] = @Status WHERE Id = @Id AND UserId = @UserId";
+                connection.Execute(sqlcode, new { task.NameTask, task.Description, task.StartTask, task.Deadline, userId, task.Priority, task.Status, id });
             }
         }
 
@@ -77,8 +77,8 @@ namespace Task_Meneger.Controllers.DataBase
         {
             using var connection = new SqlConnection(_connection);
             {
-                var sqlcode = "INSERT INTO Tasks (NameTask, [Description], StartTask, Deadline, UserId, [Priority_Id], [Status_Id]) VALUES (@NameTask, @Description, @StartTask, @Deadline, @UserId, @Priority_Id, @Status)";
-                connection.ExecuteAsync(sqlcode, new { task.NameTask, task.Description, task.StartTask, task.Deadline, userId, task.Priority, task.Status });
+                var sqlcode = "INSERT INTO MyTasks (NameTask, [Description], StartTask, Deadline, UserId, [Priority], [Status]) VALUES (@NameTask, @Description, @StartTask, @Deadline, @userId, @Priority, @Status)";
+                connection.Execute(sqlcode, new { task.NameTask, task.Description, task.StartTask, task.Deadline, userId, task.Priority, task.Status });
             }
         }
 

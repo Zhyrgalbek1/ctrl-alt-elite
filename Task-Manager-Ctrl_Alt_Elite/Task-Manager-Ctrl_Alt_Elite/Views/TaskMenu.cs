@@ -1,6 +1,7 @@
-﻿using Task_Meneger.Controllers.DataBase;
+﻿using Task_Meneger.Controllers.Additional_settings;
+using Task_Meneger.Controllers.DataBase;
+using Task_Meneger.Controllers.TaskManager;
 using Task_Meneger.Helpers;
-using Task_Meneger.Models;
 
 namespace Task_Meneger.Views
 {
@@ -41,6 +42,8 @@ namespace Task_Meneger.Views
                 Console.WriteLine("1 - Посмотреть все задачи");
                 Console.WriteLine("2 - Добавить новую задачу");
                 Console.WriteLine("3 - Удалить задачу");
+                Console.WriteLine("4 - Экспортировать задачи.");
+                Console.WriteLine("5 - Импортировать задачи.");
                 Console.WriteLine("0. Выход");
                 Console.WriteLine("=======================");
                 Console.WriteLine();
@@ -54,6 +57,8 @@ namespace Task_Meneger.Views
                     case '1': GetAllUserTasks(); break;
                     case '2': AddTask(); break;
                     case '3': RemoveUserTask(); break;
+                    case '4': ExportTask(); break;
+                    case '5': ImportTask(); break;
                     case '0': return;
                     default:
                         Console.WriteLine("Неверный вариант. Пожалуйста, попробуйте еще раз.");
@@ -67,35 +72,10 @@ namespace Task_Meneger.Views
         /// </summary>
         private void AddTask()
         {
-            Console.WriteLine("Добавить новую задачу:");
-            Console.WriteLine("===============");
+            Console.Clear();
+            var taskManager = new TaskManager(_currentUserId, _connectionString);
+            taskManager.AddNewTask();
 
-            Console.SetCursorPosition(12, 0);
-            var nameTask = Helper.ReadString("Название: ");
-            Console.SetCursorPosition(12, 1);
-            var description = Helper.ReadString("Описание: ");
-            Console.SetCursorPosition(12, 2);
-            var StartTask = DateTime.Parse(Helper.ReadString("Начало: "));
-            Console.SetCursorPosition(12, 3);
-            var Deadline = DateTime.Parse(Helper.ReadString("Конец: "));
-            Console.SetCursorPosition(12, 4);
-            var Priority_Id = Helper.ReadInt("Приоритет: ");
-            Console.SetCursorPosition(12, 5);
-            var Status = Helper.ReadInt("Статус: ");
-            Console.ResetColor();
-
-            var newtask = new MyTask()
-            {
-                NameTask = nameTask,
-                Description = description,
-                StartTask = StartTask,
-                Deadline = Deadline,
-                Priority = Priority_Id,
-                Status = Status
-            };
-
-            var data = new DataBaseMethodsForTask(_connectionString);
-            data.AddTask(newtask, _currentUserId);
             Console.WriteLine("Задача успешно добавлена!");
         }
 
@@ -105,10 +85,12 @@ namespace Task_Meneger.Views
         /// <returns></returns>
         private void GetAllUserTasks()
         {
+            Console.Clear();
             var data = new DataBaseMethodsForTask(_connectionString);
             var tasks = data.GetAllUserTasks(_currentUserId);
             foreach (var task in tasks)
             {
+                Console.WriteLine($"Id: {task.Id}");
                 Console.WriteLine($"Название: {task.NameTask}");
                 Console.WriteLine($"Описание: {task.Description}");
                 Console.WriteLine($"Начала задачи: {task.StartTask}");
@@ -124,6 +106,7 @@ namespace Task_Meneger.Views
         /// <returns></returns>
         private void RemoveUserTask()
         {
+            Console.Clear();
             GetAllUserTasks();
             var id = Helper.ReadInt("Введите ID задачи для удаления: ");
 
@@ -131,7 +114,31 @@ namespace Task_Meneger.Views
             data.RemoveTask(id, _currentUserId);
             Console.WriteLine("Задача удалена!");
         }
-
+        /// <summary>
+        /// Импортировать задачу.
+        /// </summary>
+        private void ImportTask()
+        {
+            Console.Clear();
+            var jsonImport = new JsonConnection();
+            var importTask = jsonImport.ImportJson(Helper.ReadString("Введите название файла: "));
+            foreach (var task in importTask)
+            {
+                Console.WriteLine($"ID: {task.Id}.\nНазвание: {task.NameTask}.\nОписание: {task.Description}" +
+                            $"\nНачало: {task.StartTask}.\nDeadline: {task.Deadline}.\nПриоритет: {task.Priority}.\nСтатус: {task.Status}.");
+            }
+        }
+        /// <summary>
+        /// Экспортировать задачу.
+        /// </summary>
+        private void ExportTask()
+        {
+            Console.Clear();
+            var jsonImport = new JsonConnection();
+            var data = new DataBaseMethodsForTask(_connectionString);
+            var tasks = data.GetAllUserTasks(_currentUserId);
+            jsonImport.ExporJson(tasks);
+        }
     }
 }
 

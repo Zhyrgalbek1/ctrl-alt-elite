@@ -26,39 +26,26 @@ namespace Task_Meneger.Controllers.TaskManager
         /// <returns></returns>
         private MyTask ToCreateTask()
         {
-            //Console.ForegroundColor = ConsoleColor.Yellow;
-            //Console.WriteLine("Название: ");
-            //Console.WriteLine("Описание: ");
-            //Console.WriteLine("Начало: ");
-            //Console.WriteLine("Конец: ");
-            //Console.WriteLine("Приоритет: ");
-            //Console.WriteLine("Статус: ");
-            //Console.ResetColor();
-            //Console.SetCursorPosition(12, 0);
-            //var nameTask = Console.ReadLine();
-            //Console.SetCursorPosition(12, 1);
-            //var description = Console.ReadLine();
-            //Console.SetCursorPosition(12, 2);
-            //var StartTask = DateTime.Parse(Console.ReadLine());
-            //Console.SetCursorPosition(12, 3);
-            //var Deadline = DateTime.Parse(Console.ReadLine());
-            //Console.SetCursorPosition(12, 4);
-            //var Priority_Id = int.Parse(Console.ReadLine());
-            //Console.SetCursorPosition(12, 5);
-            //var Status = int.Parse(Console.ReadLine());
             Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Название: ");
+            Console.WriteLine("Описание: ");
+            Console.WriteLine("Начало: ");
+            Console.WriteLine("Конец: ");
+            Console.WriteLine("Приоритет: ");
+            Console.WriteLine("Статус: ");
+            Console.ResetColor();
             Console.SetCursorPosition(12, 0);
-            var nameTask = Helper.ReadString("Название: ");
+            var nameTask = Console.ReadLine();
             Console.SetCursorPosition(12, 1);
-            var description = Helper.ReadString("Описание: ");
+            var description = Console.ReadLine();
             Console.SetCursorPosition(12, 2);
-            var StartTask = DateTime.Parse(Helper.ReadString("Начало: "));
+            var StartTask = DateTime.Parse(Console.ReadLine());
             Console.SetCursorPosition(12, 3);
-            var Deadline = DateTime.Parse(Helper.ReadString("Конец: "));
+            var Deadline = DateTime.Parse(Console.ReadLine());
             Console.SetCursorPosition(12, 4);
-            var Priority_Id = Helper.ReadInt("Приоритет: ");
+            var Priority_Id = int.Parse(Console.ReadLine());
             Console.SetCursorPosition(12, 5);
-            var Status = Helper.ReadInt("Статус: ");
+            var Status = int.Parse(Console.ReadLine());
             Console.ResetColor();
             var newtask = new MyTask()
             {
@@ -77,9 +64,9 @@ namespace Task_Meneger.Controllers.TaskManager
         /// <param name="userId"></param>
         public void AddNewTask()
         {
-            ToCreateTask();
+            var user = ToCreateTask();
             var datebaseTask = new DataBaseMethodsForTask(_connectionString);
-            datebaseTask.AddTask(ToCreateTask(), _currentIdUser);
+            datebaseTask.AddTask(user, _currentIdUser);
         }
         /// <summary>
         /// Удалени задачи.

@@ -1,4 +1,6 @@
-﻿namespace Task_Meneger.Apps
+﻿using Task_Meneger.Views;
+
+namespace Task_Meneger.Apps
 {
     public class TestApp
     {

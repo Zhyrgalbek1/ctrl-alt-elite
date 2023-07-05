@@ -10,7 +10,7 @@ namespace Task_Meneger.Controllers.Additional_settings
         /// Метод для создание хэш-ключей.
         /// </summary>
         /// <returns></returns>
-        public byte[] CreateSalt()
+        private byte[] CreateSalt()
         {
             byte[] salt = new byte[16];
             using (var rng = RandomNumberGenerator.Create())

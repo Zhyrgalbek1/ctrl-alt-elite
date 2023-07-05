@@ -1,4 +1,5 @@
-﻿using Task_Meneger.Controllers.DataBase;
+﻿using Task_Meneger.Controllers.Additional_settings.Connection;
+using Task_Meneger.Controllers.DataBase;
 using Task_Meneger.Helpers;
 using Task_Meneger.Models;
 
@@ -10,7 +11,7 @@ namespace Task_Meneger.Views
         /// <summary>
         /// Строка подключения.
         /// </summary>
-        private readonly string _connectionString;
+        private string _connectionString;
         /// <summary>
         /// Созадение обьекта класса и передача строки подк.
         /// </summary>
@@ -38,6 +39,7 @@ namespace Task_Meneger.Views
                 Console.WriteLine("2 - Удалить профиль.");
                 Console.WriteLine("3 - Переключится на менеджер задач.");
                 Console.WriteLine("4 - Переключится в режим админа.");
+                Console.WriteLine("5 - Изменить соединение с базой данных.");
                 Console.WriteLine("0 - Выход.");
                 Console.WriteLine("=======================");
                 Console.WriteLine();
@@ -51,13 +53,14 @@ namespace Task_Meneger.Views
                     case '1':
                         EditUserMenu(); break;
                     case '2':
-                        DeleteUserMenu(); break;
+                        DeleteUserMenu(); return;
                     case '3':
                         var taskMenu = new TaskMenu(_connectionString, _currentUserId);
                         taskMenu.Start(); break;
                     case '4':
                         var admin = new AdminMenu(_connectionString, _currentUserId);
                         admin.Start(); break;
+                    case '5': ChangeConnection(); break;
                     case '0':
                         return;
                     default:
@@ -186,6 +189,14 @@ namespace Task_Meneger.Views
             {
                 Console.WriteLine("Пользователь не найден");
             }
+        }
+        /// <summary>
+        /// Метод для изменение базы данных.
+        /// </summary>
+        private void ChangeConnection()
+        {
+            var connection = new Connection();
+            _connectionString = connection.ChangeCon(Helper.ReadString("Введите название файла: "));
         }
     }
 }

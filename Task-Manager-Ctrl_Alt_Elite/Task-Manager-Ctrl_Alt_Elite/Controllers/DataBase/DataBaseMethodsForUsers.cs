@@ -44,8 +44,8 @@ namespace Task_Meneger.Controllers.DataBase
         {
             using var connection = new SqlConnection(_connection);
             {
-                var sqlcode = "DELETE FROM Users WHERE Id = @Id";
-                connection.ExecuteAsync(sqlcode, new { id });
+                var sqlcode = "DELETE FROM Users WHERE Id = @id";
+                connection.Execute(sqlcode, new { id });
             }
         }
 
@@ -59,7 +59,7 @@ namespace Task_Meneger.Controllers.DataBase
             using var connection = new SqlConnection(_connection);
             {
                 var sqlcode = "INSERT INTO Users (FirstName, LastName, [Login], [Password], Email, Phone) VALUES (@FirstName, @LastName, @Login, @Password, @Email, @Phone)";
-                connection.ExecuteAsync(sqlcode, new { user.FirstName, user.LastName, user.Login, user.Password, user.Email, user.Phone });
+                connection.Execute(sqlcode, user);
             }
         }
 
@@ -74,7 +74,7 @@ namespace Task_Meneger.Controllers.DataBase
             using var connection = new SqlConnection(_connection);
             {
                 var sqlcode = "UPDATE Users SET FirstName = @FirstName, LastName = @LastName, [Login] = @Login, [Password] = @Password, Email = @Email, Phone = @Phone WHERE Id = @Id";
-                connection.ExecuteAsync(sqlcode, new { user.FirstName, user.LastName, user.Login, user.Password, user.Email, user.Phone, id });
+                connection.Execute(sqlcode, new { user.FirstName, user.LastName, user.Login, user.Password, user.Email, user.Phone, id });
             }
         }
         /// <summary>
